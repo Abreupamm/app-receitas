@@ -1,27 +1,53 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import renderWithRouter from '../helpers/renderWithRouter';
+import renderWithRouter from './renderWithRouter';
 import Header from '../components/Header';
+import App from '../App';
 
-describe('testando o componente Header', () => {
-  it('testa a renderizacao do título e dos ícones ', () => {
-    renderWithRouter(<Header />)
-    const titleIconInput = screen.getByTestId('profile-top-btn')
-    const searchIconInput = screen.getByTestId('search-top-btn')
-    const titleInput = screen.getByTestId('page-title')
-    })
-    expect(titleIconInput).toBeInTheDocument()
-    expect(searchIconInput).toBeInTheDocument()
-    expect(titleInput).toBeInTheDocument()
-  })
-  it('testa redirecionamento', () => {
-    const {history} = renderWithRouter(<Header />)
-    const enterButton = screen.getByRole('button', {
-      name: /enter/i
-    })
-    const profilePage = screen.getByText(/Profile/i)
-    userEvent.click(enterButton)
-    expect(profilePage).toBeInTheDocument()
-})
+describe('Testando o componente Header', () => {
+  it('Verificando os elementos na tela', () => {
+    const { history } = renderWithRouter(<Header />);
 
+    const profileIcon = screen.getByTestId('profile-top-btn');
+    const pageTitle = screen.getByTestId('page-title');
+    const searchIcon = screen.getByTestId('search-top-btn');
+
+    expect(profileIcon).toBeInTheDocument();
+    expect(pageTitle).toBeInTheDocument();
+    expect(searchIcon).toBeInTheDocument();
+  });
+
+  it('Verificando se o usuário e direcionado para a página de perfil', () => {
+    const { history } = renderWithRouter(<App />);
+
+    localStorage.setItem('user', JSON.stringify({ email: 'trybe@teste.com' }));
+    history.push('/foods');
+
+    const profileIcon = screen.getByTestId('profile-top-btn');
+
+    userEvent.click(profileIcon);
+
+    expect(history.location.pathname).toBe('/profile');
+  });
+
+  it('Verificando se a barra de pesquisa aparece ao clicar no botão', () => {
+    const { history } = renderWithRouter(<App />);
+
+    history.push('/foods');
+
+    const dataTestIdSearch = 'search-input';
+
+    const searchIcon = screen.getByTestId('search-top-btn');
+
+    expect(screen.queryByTestId(dataTestIdSearch)).not.toBeInTheDocument();
+
+    userEvent.click(searchIcon);
+
+    expect(screen.getByTestId(dataTestIdSearch)).toBeInTheDocument();
+
+    userEvent.click(searchIcon);
+
+    expect(screen.queryByTestId(dataTestIdSearch)).not.toBeInTheDocument();
+  });
+});
