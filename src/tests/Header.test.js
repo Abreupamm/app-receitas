@@ -17,7 +17,6 @@ describe('Testando o componente Header', () => {
     expect(pageTitle).toBeInTheDocument();
     expect(searchIcon).toBeInTheDocument();
   });
-
   it('Verificando se a barra de pesquisa aparece ao clicar no botão', () => {
     const { history } = renderWithRouter(<RecipeAppProvider><App /></RecipeAppProvider>);
 
@@ -61,5 +60,54 @@ describe('7 - Implemente o header de acordo com a necessidade de cada tela', () 
     userEvent.click(searchIconInput)
 
     expect(searchInput).not.toBeInTheDocument()
+  });
+});
+
+describe('Testando o componente Header', () => {
+  it('Verificando se a barra de pesquisa aparece ao clicar no botão', () => {
+    const { history } = renderWithRouter(<RecipeAppProvider><App /></RecipeAppProvider>);
+
+    history.push('/drinks');
+
+    const dataTestIdSearch = 'search-input';
+
+    const searchIcon = screen.getByTestId('search-top-btn');
+
+    expect(screen.queryByTestId(dataTestIdSearch)).not.toBeInTheDocument();
+
+    userEvent.click(searchIcon);
+
+    expect(screen.getByTestId(dataTestIdSearch)).toBeInTheDocument();
+
+    userEvent.click(searchIcon);
+
+    expect(screen.queryByTestId(dataTestIdSearch)).not.toBeInTheDocument();
+  });
+});
+
+describe('7 - Implemente o header de acordo com a necessidade de cada tela', () => {
+  it('testa algo sem header', () => {
+    const { history } = renderWithRouter(<RecipeAppProvider><App /></RecipeAppProvider>);
+    history.push('/foods/:id');
+
+    const titleIconInput = screen.getByTestId('profile-top-btn');
+    const searchIconInput = screen.getByTestId('search-top-btn');
+    const titleInput = screen.getByTestId('page-title');
+
+    expect(titleIconInput).not.toBeInTheDocument()
+    expect(searchIconInput).not.toBeInTheDocument()
+    expect(titleInput).not.toBeInTheDocument()
+  });
+  it('testa algo sem header', () => {
+    const { history } = renderWithRouter(<RecipeAppProvider><App /></RecipeAppProvider>);
+    history.push('/drinks/:id');
+
+    const titleIconInput = screen.getByTestId('profile-top-btn');
+    const searchIconInput = screen.getByTestId('search-top-btn');
+    const titleInput = screen.getByTestId('page-title');
+
+    expect(titleIconInput).not.toBeInTheDocument()
+    expect(searchIconInput).not.toBeInTheDocument()
+    expect(titleInput).not.toBeInTheDocument()
   });
 });

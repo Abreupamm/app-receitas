@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useRecipeApp } from '../context/RecipeAppProvider';
-
 import fetchDetailsDrink from '../helpers/fetchDetailsDrink';
 import fetchRecomendedFood from '../helpers/fecthRecomendedFoods';
 import RecipeDetails from '../components/RecipeDetails';
-import Header from '../components/Header';
 
 const RecipeDrinkPage = ({ match: { params: { id } } }) => {
   const { setDetails, setPage } = useRecipeApp();
@@ -36,7 +34,6 @@ const RecipeDrinkPage = ({ match: { params: { id } } }) => {
 
   return (
     <div>
-      <Header />
       <RecipeDetails
         idRecipe={ id }
         ingredients={ ingredients }

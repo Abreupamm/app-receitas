@@ -122,7 +122,7 @@ describe('Testes do searchbar', () => {
         userEvent.click(firstLetterSearch);
         userEvent.click(execSearch);
     
-        await waitFor(() =>  expect(window.alert).toBeCalledWith(
+        await waitFor(() =>  expect(window.alert).toHaveBeenCalledWith(
           'Your search must have only 1 (one) character',
         ));
       });
@@ -222,7 +222,7 @@ describe('Testes do searchbar', () => {
         userEvent.click(firstLetterSearch);
         userEvent.click(execSearch);
     
-        await waitFor(() =>  expect(window.alert).toBeCalledWith(
+        await waitFor(() =>  expect(window.alert).toHaveBeenCalledWith(
           'Your search must have only 1 (one) character',
         ));
       });
