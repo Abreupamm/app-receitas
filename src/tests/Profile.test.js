@@ -64,8 +64,6 @@ describe('60 até 62 - Redirecionamentos botões - fav, done recipes e logout', 
     expect(history.location.pathname).toBe('/');
   })
 }); 
-import renderWithRouter from './renderWithRouter';
-import App from '../App';
 
 describe('Testando página Profile', () => {
   it('57 - Testa os elementos descritos no protótipo', () => {
@@ -86,8 +84,6 @@ describe('Testando página Profile', () => {
 
   /* it('58 - E-mail do usuário visível', () => {
     const { history } = renderWithRouter(<App />);
-
-
   }) */
 
   it('59 - E-mail do usuário visível', () => {
