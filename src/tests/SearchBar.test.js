@@ -117,11 +117,11 @@ describe('Testes do searchbar', () => {
 
         const search = screen.getByTestId('search-input');
         const firstLetterSearch = screen.getByTestId('first-letter-search-radio');
-        const execSearch = screen.getByTestId('exec-search-btn');
+        // const execSearch = screen.getByTestId('exec-search-btn');
 
         userEvent.type(search, 'aaa');
         userEvent.click(firstLetterSearch);
-        userEvent.click(execSearch);
+        // userEvent.click(execSearch);
     
         await waitFor(() =>  expect(window.alert).toHaveBeenCalledWith(
           'Your search must have only 1 (one) character',
@@ -217,14 +217,66 @@ describe('Testes do searchbar', () => {
 
         const search = screen.getByTestId('search-input');
         const firstLetterSearch = screen.getByTestId('first-letter-search-radio');
-        const execSearch = screen.getByTestId('exec-search-btn');
+        // const execSearch = screen.getByTestId('exec-search-btn');
 
         userEvent.type(search, 'aa');
         userEvent.click(firstLetterSearch);
-        userEvent.click(execSearch);
+        // userEvent.click(execSearch);
     
         waitFor(() =>  expect(window.alert).toHaveBeenCalledWith(
           'Your search must have only 1 (one) character',
         ));
       });
+
+      it('alerta ao nao encontrar uma receita em foods', async () => {
+        const alert = jest.spyOn(window, 'alert').mockImplementation(() => {});
+
+        const { history } = renderWithRouter(<RecipeAppProvider><App /></RecipeAppProvider>);
+
+        history.push('/foods');
+
+        const searchButton = screen.getByTestId('search-top-btn');
+
+        userEvent.click(searchButton);
+
+        const search = screen.getByTestId('search-input');
+        const radioIngredients = screen.getByRole('radio', {
+          name: /ingredientes/i
+        })
+        const execSearch = screen.getByTestId('exec-search-btn');
+
+        userEvent.type(search, 'xablau');
+        userEvent.click(radioIngredients);
+        userEvent.click(execSearch);
+    
+        waitFor(() =>  expect(window.alert).toHaveBeenCalledWith(
+          "Sorry, we haven't found any recipes for these filters.",
+        ));
+      });
+      it('alerta ao nao encontrar uma receita em drinks', async () => {
+        const alert = jest.spyOn(window, 'alert').mockImplementation(() => {});
+
+        const { history } = renderWithRouter(<RecipeAppProvider><App /></RecipeAppProvider>);
+
+        history.push('/drinks');
+
+        const searchButton = screen.getByTestId('search-top-btn');
+
+        userEvent.click(searchButton);
+
+        const search = screen.getByTestId('search-input');
+        const radioIngredients = screen.getByRole('radio', {
+          name: /ingredientes/i
+        })
+        const execSearch = screen.getByTestId('exec-search-btn');
+
+        userEvent.type(search, 'xablau');
+        userEvent.click(radioIngredients);
+        userEvent.click(execSearch);
+    
+        waitFor(() =>  expect(window.alert).toHaveBeenCalledWith(
+          "Sorry, we haven't found any recipes for these filters.",
+        ));
+      });
+
     });

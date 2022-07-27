@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from '../helpers/renderWithRouter';
 import App from '../App';
@@ -11,10 +11,12 @@ describe('Testando o componente Header', () => {
 
     history.push('/foods')
 
+    const buttonEnter = screen.getByText(/enter/i)
     const profileIcon = screen.getByTestId('profile-top-btn');
     const pageTitle = screen.getByTestId('page-title');
     const searchIcon = screen.getByTestId('search-top-btn');
 
+    expect(buttonEnter).toBeInTheDocument();
     expect(profileIcon).toBeInTheDocument();
     expect(pageTitle).toBeInTheDocument();
     expect(searchIcon).toBeInTheDocument();
@@ -117,5 +119,34 @@ describe('7 - Implemente o header de acordo com a necessidade de cada tela', () 
     expect(titleIconInput).not.toBeInTheDocument()
     expect(searchIconInput).not.toBeInTheDocument()
     expect(titleInput).not.toBeInTheDocument()
+  });
+});
+
+describe('Cards aparecem na tela', () => {
+  it('Card é renderizado na tela', async () => {
+    const { history } = renderWithRouter(<RecipeAppProvider><App /></RecipeAppProvider>);
+
+    history.push('/foods');
+
+    waitFor(() => expect(screen.getByTestId('0-card-img')).toBeInTheDocument())
+  
+  });
+});
+
+describe('Testa se redireciona para /profile ao clicar no icone de profile', () => {
+  it('Redireciona para /profile', async () => {
+    const { history } = renderWithRouter(<RecipeAppProvider><App /></RecipeAppProvider>);
+
+    history.push('/foods');
+
+    const profileIcon = screen.getByTestId('profile-top-btn')
+
+    userEvent.click(profileIcon)
+
+    const profileEmail = screen.getByTestId('profile-email')
+
+    expect(history.location.pathname).toBe('/profile')
+    expect(profileEmail).toBeInTheDocument()
+  
   });
 });
