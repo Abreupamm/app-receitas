@@ -1,13 +1,15 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import renderWithRouter from '..helpers/renderWithRouter';
+import renderWithRouter from '../helpers/renderWithRouter';
 import App from '../App';
 import RecipeAppProvider from '../context/RecipeAppProvider';
 
 describe('Testando o componente Header', () => {
   it('Verificando os elementos na tela', () => {
     const { history } = renderWithRouter(<RecipeAppProvider><App /></RecipeAppProvider>);
+
+    history.push('/foods')
 
     const profileIcon = screen.getByTestId('profile-top-btn');
     const pageTitle = screen.getByTestId('page-title');
@@ -88,11 +90,14 @@ describe('Testando o componente Header', () => {
 describe('7 - Implemente o header de acordo com a necessidade de cada tela', () => {
   it('testa algo sem header', () => {
     const { history } = renderWithRouter(<RecipeAppProvider><App /></RecipeAppProvider>);
-    history.push('/foods/:id');
+    
+    history.push('/foods');
 
     const titleIconInput = screen.getByTestId('profile-top-btn');
     const searchIconInput = screen.getByTestId('search-top-btn');
     const titleInput = screen.getByTestId('page-title');
+
+    history.push('/foods/:id');
 
     expect(titleIconInput).not.toBeInTheDocument()
     expect(searchIconInput).not.toBeInTheDocument()
@@ -100,11 +105,14 @@ describe('7 - Implemente o header de acordo com a necessidade de cada tela', () 
   });
   it('testa algo sem header', () => {
     const { history } = renderWithRouter(<RecipeAppProvider><App /></RecipeAppProvider>);
-    history.push('/drinks/:id');
+
+    history.push('/foods');
 
     const titleIconInput = screen.getByTestId('profile-top-btn');
     const searchIconInput = screen.getByTestId('search-top-btn');
     const titleInput = screen.getByTestId('page-title');
+
+    history.push('/drinks/:id');
 
     expect(titleIconInput).not.toBeInTheDocument()
     expect(searchIconInput).not.toBeInTheDocument()

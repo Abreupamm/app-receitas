@@ -1,8 +1,9 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from '../helpers/renderWithRouter';
 import App from '../App';
+import RecipeAppProvider from '../context/RecipeAppProvider'
 
 describe('Testes do searchbar', () => {
     it('10 - elementos da barra com seus atributos', () => {
@@ -13,11 +14,11 @@ describe('Testes do searchbar', () => {
       const searchButton = screen.getByTestId('search-top-btn');
       userEvent.click(searchButton)
 
-      const search = screen.getAllByTestId('search-input');
-      const ingredientSearch = screen.getAllByTestId('ingredient-search-radio');
-      const nameSearch = screen.getAllByTestId('name-search-radio');
-      const firstLetterSearch = screen.getAllByTestId('first-letter-search-radio');
-      const execSearch = screen.getAllByTestId('exec-search-btn');
+      const search = screen.getByTestId('search-input');
+      const ingredientSearch = screen.getByTestId('ingredient-search-radio');
+      const nameSearch = screen.getByTestId('name-search-radio');
+      const firstLetterSearch = screen.getByTestId('first-letter-search-radio');
+      const execSearch = screen.getByTestId('exec-search-btn');
 
       expect(search).toBeInTheDocument()
       expect(ingredientSearch).toBeInTheDocument()
@@ -32,8 +33,8 @@ describe('Testes do searchbar', () => {
       it('requisição correta buscando pelo nome', async () => {
         const fetch = jest.spyOn(global, 'fetch');
 
-        const { history } = (<RecipeAppProvider><App /></RecipeAppProvider>);
-
+        const { history } = renderWithRouter(<RecipeAppProvider><App /></RecipeAppProvider>);
+        console.log(history);
         history.push('/foods');
 
         const searchButton = screen.getByTestId('search-top-btn');
@@ -222,7 +223,7 @@ describe('Testes do searchbar', () => {
         userEvent.click(firstLetterSearch);
         userEvent.click(execSearch);
     
-        await waitFor(() =>  expect(window.alert).toHaveBeenCalledWith(
+        waitFor(() =>  expect(window.alert).toHaveBeenCalledWith(
           'Your search must have only 1 (one) character',
         ));
       });
