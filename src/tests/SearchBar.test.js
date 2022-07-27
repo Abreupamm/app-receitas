@@ -121,8 +121,13 @@ describe('Testes do searchbar', () => {
         userEvent.type(search, 'aaa');
         userEvent.click(firstLetterSearch);
         userEvent.click(execSearch);
+<<<<<<< HEAD
 
         await waitFor(() =>  expect(window.alert).toBeCalledWith(
+=======
+    
+        await waitFor(() =>  expect(window.alert).toHaveBeenCalledWith(
+>>>>>>> 2cca3ed351a2847e9dd97b676522ee679aee53b5
           'Your search must have only 1 (one) character',
         ));
       });
@@ -221,8 +226,13 @@ describe('Testes do searchbar', () => {
         userEvent.type(search, 'aa');
         userEvent.click(firstLetterSearch);
         userEvent.click(execSearch);
+<<<<<<< HEAD
 
         await waitFor(() =>  expect(window.alert).toBeCalledWith(
+=======
+    
+        await waitFor(() =>  expect(window.alert).toHaveBeenCalledWith(
+>>>>>>> 2cca3ed351a2847e9dd97b676522ee679aee53b5
           'Your search must have only 1 (one) character',
         ));
       });
